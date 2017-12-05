@@ -62,7 +62,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', auth);
 app.use('/', projects);
-app.use('/project/:_id', tasks);
+app.use('/project', tasks);
+app.use('/project_completed', projects);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
