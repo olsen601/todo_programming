@@ -91,8 +91,8 @@ var date = new Date();
 
   if (!req.body || !req.body.text) {
     //no task text info, redirect to home page with flash message
-    req.flash('error', 'please enter a task');
-    res.redirect('/');
+    req.flash('error', 'please enter a project');
+    res.redirect('/project');
   }
 
   else {
@@ -100,9 +100,9 @@ var date = new Date();
     // Insert into database. New tasks are assumed to be not completed.
 
     // Create a new Task, an instance of the Task schema, and call save()
-    new Task( { creator: req.user._id, text: req.body.text, completed: false, dateCreated: date} ).save()
-      .then((newTask) => {
-        console.log('The new task created is: ', newTask);
+    new Project( { creator: req.user._id, name: req.body.name, completed: false, dateCreated: date} ).save()
+      .then((newProject) => {
+        console.log('The new project created is: ', newProject);
         res.redirect('/');
       })
       .catch((err) => {

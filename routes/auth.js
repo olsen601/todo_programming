@@ -15,15 +15,14 @@ router.get('/logout', function(req, res, next){
 
 /* POST to login */
 router.post('/login', passport.authenticate('local-login', {
-  successRedirect: '/',
+  successRedirect: '/projects',
   failureRedirect: '/auth',
   failureFlash: true
 }));
 
-
 /* POST to sign up */
 router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/',
+  successRedirect: '/projects',
   failureRedirect: '/auth',
   failureFlash: true //show message
 }))
