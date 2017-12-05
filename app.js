@@ -11,7 +11,6 @@ var flash = require('express-flash');
 var mongoose = require('mongoose');
 var MongoDBStore = require('connect-mongodb-session')(session);
 
-var index = require('./routes/index');
 var users = require('./routes/users');
 
 var tasks = require('./routes/tasks');
@@ -59,7 +58,7 @@ app.use(passport.initialize());
 app.use(passport.session());         // This creates an req.user variable for logged in users.
 app.use(flash());
 
-app.use('/', index);
+app.use('/', projects);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
