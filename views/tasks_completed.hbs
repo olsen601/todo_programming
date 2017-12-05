@@ -1,0 +1,15 @@
+<div class="tasklist">
+  {{#each tasks}}
+    <li class="list"><a href="task/{{this._id}}">{{this.text}}</a> Created: {{formatDate this.dateCreated}}, Completed: {{formatDate this.dateCompleted}}</li>
+  {{else}}
+    <p>No tasks have been completed!</p>
+  {{/each}}
+</div>
+
+<div class="deleteall">
+  {{#if tasks}}
+    <form action="/deleteAll" method="POST">
+      <input class="delete_all_button" type="submit" value="Delete all">
+    </form>
+  {{/if}}
+</div>

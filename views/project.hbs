@@ -1,0 +1,25 @@
+<h2>{{project.name}}</h2>
+
+<div class="projectinfo">
+{{#if project.completed}}
+  <p>{{project.name}} is completed.<br>Created: {{formatDate project.dateCreated}} - Completed: {{formatDate project.dateCompleted}}<br></p>
+{{else}}
+  <p>{{project.name}} is not yet completed.</p>
+
+  <form action="/done" method="POST" class="done_form">
+    <input type="hidden" name="_id" value="{{project._id}}">
+    <input class="done_button" type="submit" name="done" value="Done">
+  </form>
+
+{{/if}}
+
+</div>
+
+<div class="delete_project">
+
+  <form action="/delete" method="POST" class="delete_form">
+    <input type="hidden" name="_id" value="{{project._id}}">
+    <input class="delete_button" type="submit" name="done" value="Delete">
+  </form>
+
+</div>

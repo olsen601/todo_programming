@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var projectSchema = new Schema( {
-  Name: String,
+  name: String,
   completed: Boolean,
   dateCreated: Date,
   dateCompleted: Date,
