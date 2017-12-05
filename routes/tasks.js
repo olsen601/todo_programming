@@ -92,7 +92,7 @@ var date = new Date();
   if (!req.body || !req.body.text) {
     //no task text info, redirect to home page with flash message
     req.flash('error', 'please enter a task');
-    res.redirect('/');
+    res.redirect('/project');
   }
 
   else {
@@ -103,7 +103,7 @@ var date = new Date();
     new Task( { project: req.project._id, text: req.body.text, completed: false, dateCreated: date} ).save()
       .then((newTask) => {
         console.log('The new task created is: ', newTask);
-        res.redirect('/');
+        res.redirect('/project');
       })
       .catch((err) => {
         next(err);   // most likely to be a database error.
@@ -121,7 +121,7 @@ router.post('/done', function(req, res, next) {
   Task.findOneAndUpdate( { project: req.project._id, _id: req.body._id}, {$set: {completed: true, dateCompleted: date}} )
     .then((updatedTask) => {
       if (updatedTask) {   // updatedTask is the document *before* the update
-        res.redirect('/')  // One thing was updated. Redirect to home
+        res.redirect('/project')  // One thing was updated. Redirect to home
       } else {
         // if no updatedTask, then no matching document was found to update. 404
         res.status(404).send("Error marking task done: not found");
@@ -142,7 +142,7 @@ router.post('/alldone', function(req, res, next) {
     .then( (result) => {
       console.log("How many documents were modified? ", result.n);
       req.flash('info', 'All tasks marked as done!');
-      res.redirect('/');
+      res.redirect('/project');
     })
     .catch( (err) => {
       next(err);
@@ -158,7 +158,7 @@ router.post('/delete', function(req, res, next){
     .then( (result) => {
 
       if (result.deletedCount === 1) {  // one task document deleted
-        res.redirect('/');
+        res.redirect('/project');
 
       } else {
         // The task was not found. Report 404 error.
@@ -176,7 +176,7 @@ router.post('/deleteDone', function(req, res, next) {
   Task.deleteMany( {completed: true} )
     .then( (result) => {
       req.flash('info', 'All Completed Tasks Deleted');
-      res.redirect('/');
+      res.redirect('/project');
     })
     .catch( (err) => {
       next(err);
@@ -188,7 +188,7 @@ router.post('/deleteDone', function(req, res, next) {
     Task.deleteMany( {project: req.project._id} )
       .then( (result) => {
         req.flash('info', 'All Tasks Deleted');
-        res.redirect('/');
+        res.redirect('/project');
       })
       .catch( (err) => {
         next(err);
