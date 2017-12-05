@@ -20,20 +20,6 @@ specify it for every router */
 
 router.use(isLoggedIn);
 
-
-/* GET home page with all incomplete tasks */
-router.get('/', function(req, res, next) {
-
-  Task.find( { project: req.project._id, completed: false})
-    .then( (docs) => {
-      res.render('index', {title: 'Project'+req.project.name+'Incomplete Tasks', tasks: docs})
-    })
-    .catch( (err) => {
-    next(err);
-  });
-
-});
-
 /* GET details about one task */
 
 router.get('/project/:_id', function(req, res, next) {
@@ -70,7 +56,7 @@ So the req.params._id will be the ObjectId of the task to find
 
 /* GET details about one task */
 
-router.get('/task/:_id', function(req, res, next) {
+router.get('task/:_id', function(req, res, next) {
 
 /* This route matches URLs in the format task/anything
 Note the format of the route path is  /task/:_id
