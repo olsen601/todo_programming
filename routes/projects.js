@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
 
   Project.find( { creator: req.user._id, completed: false})
     .then( (docs) => {
-      res.render('index', {title: 'Incomplete Tasks', projects: docs})
+      res.render('index', {title: 'Incomplete Projects', projects: docs})
     })
     .catch( (err) => {
     next(err);
@@ -89,10 +89,10 @@ router.post('/addproject', function(req, res, next){
 
 var date = new Date();
 
-  if (!req.body || !req.body.text) {
+  if (!req.body || !req.body.name) {
     //no task text info, redirect to home page with flash message
     req.flash('error', 'please enter a project');
-    res.redirect('/project');
+    res.redirect('/');
   }
 
   else {
@@ -111,7 +111,6 @@ var date = new Date();
   }
 
 });
-
 
 /* POST task done */
 router.post('/done', function(req, res, next) {
@@ -132,25 +131,6 @@ router.post('/done', function(req, res, next) {
 
 });
 
-
-/* POST all tasks done */
-router.post('/alldone', function(req, res, next) {
-
-  var date = new Date();
-
-  Project.updateMany( { creator: req.user._id, completed : false } , { $set : { completed : true, dateCompleted: date} } )
-    .then( (result) => {
-      console.log("How many documents were modified? ", result.n);
-      req.flash('info', 'All projects marked as done!');
-      res.redirect('/');
-    })
-    .catch( (err) => {
-      next(err);
-    })
-
-});
-
-
 /* POST task delete */
 router.post('/delete', function(req, res, next){
 
@@ -170,29 +150,5 @@ router.post('/delete', function(req, res, next){
     });
 
 });
-
-router.post('/deleteDone', function(req, res, next) {
-
-  Project.deleteMany( {completed: true} )
-    .then( (result) => {
-      req.flash('info', 'All Completed Projects Deleted');
-      res.redirect('/');
-    })
-    .catch( (err) => {
-      next(err);
-    })
-  });
-
-  router.post('/deleteAll', function(req, res, next) {
-
-    Project.deleteMany( {creator: req.user._id} )
-      .then( (result) => {
-        req.flash('info', 'All projects deleted');
-        res.redirect('/');
-      })
-      .catch( (err) => {
-        next(err);
-      })
-    });
 
 module.exports = router;

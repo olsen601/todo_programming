@@ -37,7 +37,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 //stores sessions or cookies in the database
 var store = MongoDBStore( {uri : db_url, collection: 'sessions'}, function(err){
@@ -59,8 +58,11 @@ app.use(passport.initialize());
 app.use(passport.session());         // This creates an req.user variable for logged in users.
 app.use(flash());
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/auth', auth);
 app.use('/', projects);
+app.use('/project', tasks);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
