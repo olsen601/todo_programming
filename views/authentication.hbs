@@ -1,0 +1,40 @@
+<div id="auth-messages">
+
+  <ul>{{#each messages}}
+    <li>{{this}}</li>
+    {{/each}}
+  </ul>
+
+</div>
+
+<div id='login'>
+
+  <h2>Log in</h2>
+
+  <form action="/auth/login" method="POST">
+    <label for="username">Username</label>
+    <input type="text" name="username" required>
+    <br>
+    <label for="password">Password</label>
+    <input type="password" name="password" required>
+    <br>
+    <input type="submit" value="Login">
+  </form>
+
+</div>
+
+<div id='signup'>
+
+  <h2>Sign up for an account</h2>
+
+  <form action="/auth/signup" method="POST">
+    <label for="username">Username</label>
+    <input type="text" name="username" required>
+    <br>
+    <label for="password">Password</label>
+    <input type="password" name="password" required>
+    <br>
+    <input type="submit" value="Sign up">
+  </form>
+
+</div>

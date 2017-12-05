@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    {{{body}}}
+
+    <div class="navigation">
+
+        {{#if username}}
+          <br>Hello, {{username}}
+          <br><a href="/">To do tasks</a> <a href="/completed">Completed Tasks</a>
+          <br><a href="/auth/logout">Logout</a>
+        {{else}}
+          Sign in to create and manage to do items
+        {{/if}}
+
+    </div>
+
+  </body>
+</html>

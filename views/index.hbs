@@ -1,0 +1,42 @@
+<div class="addproject">
+  <form id="addproject_form" action="/addProject" method="POST">
+    <input id="addproject_text" name="text" type="text" placeholder="Project Name" autofocus="autofocus" required>
+    <input id="addproject_button" name="addproject" type="submit" value="Create Project">
+  </form>
+</div>
+
+<div class="messages">
+  {{#if messages}}
+    <p class="error_msg">{{messages.error}}</p>
+    <p class="info_msg">{{messages.info}}</p>
+  {{/if}}
+</div>
+
+<div class="projectlist">
+
+{{#each projects}}
+  <p>{{@index}}: <a href="task/{{this._id}}">{{this.text}}</a> Created: {{formatDate this.dateCreated}}</p>
+
+  <form action="/done" method="POST" class="done_form">
+    <input type="hidden" name="_id" value="{{this._id}}">
+    <input class="done_button" type="submit" name="done" value="Done">
+  </form>
+
+  <form action="/delete" method="POST" class="delete_form">
+    <input type="hidden" name="_id" value="{{this._id}}">
+    <input class="delete_button" type="submit" name="done" value="Delete">
+  </form>
+
+{{else}}
+  <p>No current projects</p>
+{{/each}}
+
+</div>
+
+<div class="alldone">
+  {{#if projects}}
+    <form action="/alldone" method="POST">
+      <input class="all_done_button" type="submit" value="Everything is done!">
+    </form>
+  {{/if}}
+</div>
