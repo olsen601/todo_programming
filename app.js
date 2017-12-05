@@ -5,19 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var passport = require('passport');
-var passportConfig = require('./config/passport')(passport);
-var flash = require('express-flash');
 var mongoose = require('mongoose');
 var MongoDBStore = require('connect-mongodb-session')(session);
-
-var users = require('./routes/users');
-
-var tasks = require('./routes/tasks');
-var projects = require('./routes/projects')
-var auth = require('./routes/auth');
-
-var app = express();
+var passport = require('passport');
+var passportConfig = require('./config/passport')(passport);
+var hbs = require('hbs');
+var helpers = require('./hbshelpers/helpers');
 
 //uses a stored system variable to connect to the database
 var db_url = process.env.MONGO_URL33;
@@ -26,9 +19,16 @@ mongoose.connect(db_url, { useMongoClient: true })
   .then( () => { console.log('Connected to MongoDB') } )
   .catch( (err) => {console.log('Error Connecting to MongoDB', err); });
 
+var tasks = require('./routes/tasks');
+var projects = require('./routes/projects')
+var auth = require('./routes/auth');
+
+var app = express();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+hbs.registerHelper(helpers);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -39,7 +39,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //stores sessions or cookies in the database
-var store = new MongoDBStore( {uri : db_url, collection: 'sessions'}, function(err){
+var store = MongoDBStore( {uri : db_url, collection: 'sessions'}, function(err){
   if (err) {
     console.log('Error, can\'t conneect to MongoDB to store sessions', err);
   }
@@ -58,8 +58,8 @@ app.use(passport.initialize());
 app.use(passport.session());         // This creates an req.user variable for logged in users.
 app.use(flash());
 
+app.use('/auth', auth);
 app.use('/', projects);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
