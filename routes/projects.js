@@ -35,12 +35,12 @@ router.get('/', function(req, res, next) {
 });
 
 
-/* GET details about one task */
+/* GET details about one project */
 
 router.get('/project/:_id', function(req, res, next) {
 
 /* This route matches URLs in the format task/anything
-Note the format of the route path is  /task/:_id
+Note the format of the route path is  /project/:_id
 This matches task/1 and task/2 and task/3...
 Whatever is after /task/ will be available to the route as req.params._id
 For our app, we expect the URLs to be something like task/1234567890abcdedf1234567890

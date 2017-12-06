@@ -62,11 +62,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', auth);
 app.use('/', projects);
+app.use('/project', tasks);
 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  var err = new Error('Not Found'+ req.error_msg); //check error_msg
   err.status = 404;
   next(err);
 });
