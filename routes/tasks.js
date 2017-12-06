@@ -21,7 +21,7 @@ specify it for every router */
 router.use(isLoggedIn);
 
 /* GET home page with all incomplete tasks */
-router.get('/project', function(req, res, next) {
+router.get('/project/:id', function(req, res, next) {
 
   Task.find( { project: req.project._id, completed: false})
     .then( (docs) => {
