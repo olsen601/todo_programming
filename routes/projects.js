@@ -35,42 +35,7 @@ router.get('/', function(req, res, next) {
 
 });
 
-
-/* GET details about one project */
-
-router.get('/project/:_id', function(req, res, next) {
-
-/* This route matches URLs in the format task/anything
-Note the format of the route path is  /project/:_id
-This matches task/1 and task/2 and task/3...
-Whatever is after /task/ will be available to the route as req.params._id
-For our app, we expect the URLs to be something like task/1234567890abcdedf1234567890
-Where the number is the ObjectId of a task.
-So the req.params._id will be the ObjectId of the task to find
-*/
-
-  Project.findOne({_id: req.params._id} )
-    .then( (project) => {
-
-      if (!project) {
-        res.status(404).send('Project not found');
-      }
-      else if ( req.user._id.equals(project.creator)) {
-        // Does this task belong to this user?
-        res.render('project', {title: 'Project', project: project});
-      }
-      else {
-        // Not this user's task. Send 403 Forbidden response
-        res.status(403).send('This is not your project, you may not view it');
-      }
-    })
-    .catch((err) => {
-      next(err);
-    })
-
-});
-
-router.get('task/:_id', function(req, res, next) {
+router.get('project/:_id/task/:_id', function(req, res, next) {
 
 /* This route matches URLs in the format task/anything
 Note the format of the route path is  /task/:_id
@@ -81,6 +46,25 @@ Where the number is the ObjectId of a task.
 So the req.params._id will be the ObjectId of the task to find
 */
 
+Project.findOne({_id: req.params._id} )
+  .then( (project) => {
+
+    if (!project) {
+      res.status(404).send('Project not found');
+    }
+    else if ( req.user._id.equals(project.creator)) {
+      // Does this task belong to this user?
+      res.render('project', {title: 'Project', project: project});
+    }
+    else {
+      // Not this user's task. Send 403 Forbidden response
+      res.status(403).send('This is not your project, you may not view it');
+    }
+  })
+  .catch((err) => {
+    next(err);
+  })
+
   Task.findOne({_id: req.params._id} )
     .then( (task) => {
 
@@ -89,7 +73,7 @@ So the req.params._id will be the ObjectId of the task to find
       }
       else if ( req.project._id.equals(task.project)) {
         // Does this task belong to this user?
-        res.render('project', {title: 'Task', task: task});
+        res.render('task', {title: 'Task', task: task});
       }
       else {
         // Not this user's task. Send 403 Forbidden response
