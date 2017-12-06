@@ -68,6 +68,15 @@ So the req.params._id will be the ObjectId of the task to find
       next(err);
     })
 
+    Task.find( { project: req.project._id, completed: false})
+      .then( (task) => {
+        //find tasks
+        res.render('project', {tasks: tasks})
+      })
+      .catch( (err) => {
+      next(err);
+    });
+
 });
 
 router.get('/task/:_id', function(req, res, next) {
