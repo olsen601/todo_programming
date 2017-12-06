@@ -56,7 +56,11 @@ So the req.params._id will be the ObjectId of the task to find
       }
       else if ( req.user._id.equals(project.creator)) {
         // Does this task belong to this user?
-        res.render('project', {title: 'Project', project: project});
+
+        // also get list of tasks for this project
+        res.render('project', {title: 'Project', project: project });
+
+
       }
       else {
         // Not this user's task. Send 403 Forbidden response

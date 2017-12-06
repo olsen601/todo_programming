@@ -102,8 +102,9 @@ router.get('/completed', function(req, res, next){
 
 
 /* POST new task */
-router.post('project/:_id/add', function(req, res, next){
+router.post('/:_id/add', function(req, res, next){
 
+console.log(req.body)
 
 var date = new Date();
 
@@ -116,12 +117,13 @@ var date = new Date();
   else {
 
     // Insert into database. New tasks are assumed to be not completed.
+    console.log(req.params._id)
 
     // Create a new Task, an instance of the Task schema, and call save()
-    new Task( { project: req.project._id, text: req.body.text, completed: false, dateCreated: date} ).save()
+    new Task( { project: req.params._id, text: req.body.text, completed: false, dateCreated: date} ).save()
       .then((newTask) => {
         console.log('The new task created is: ', newTask);
-        res.redirect('/project');
+        res.redirect('/project/' + req.params._id);
       })
       .catch((err) => {
         next(err);   // most likely to be a database error.
