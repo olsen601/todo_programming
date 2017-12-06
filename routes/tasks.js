@@ -110,7 +110,7 @@ var date = new Date();
   if (!req.body || !req.body.text) {
     //no task text info, redirect to home page with flash message
     req.flash('error', 'please enter a task');
-    res.redirect('/project');
+    res.redirect('/project/'+req.params._id);
   }
 
   else {
