@@ -1,7 +1,7 @@
 <h2>{{project.name}}</h2>
 
 <div class="addtask">
-  <form id="addtask_form" action="/projects/"{{project._id}}"/add" method="POST">
+  <form id="addtask_form" action="/projects/{{project._id}}/add" method="POST">
     <input id="addtask_text" name="text" type="text" placeholder="todo task" autofocus="autofocus" required>
     <input id="addtask_button" name="add" type="submit" value="add">
   </form>
