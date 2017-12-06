@@ -17,7 +17,7 @@
 <div class="tasklist">
 
 {{#each tasks}}
-  <p>{{@index}}: <a href="project/{{project._id}}/task/{{this._id}}">{{project.name}}: {{this.text}}</a> Created: {{formatDate this.dateCreated}}</p>
+  <p>{{@index}}: <a href="/project/{{project._id}}/task/{{this._id}}">{{project.name}}: {{this.text}}</a> Created: {{formatDate this.dateCreated}}</p>
 
   <form action="/done" method="POST" class="done_form">
     <input type="hidden" name="_id" value="{{this._id}}">

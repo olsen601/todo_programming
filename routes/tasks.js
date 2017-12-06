@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var Project = require('../models/project');
 var Task = require('../models/task');
 var ObjectId = require('mongoose').mongo.ObjectID;
 
@@ -19,40 +20,6 @@ function isLoggedIn(req, res, next) {
 specify it for every router */
 
 router.use(isLoggedIn);
-
-/* GET details about one task */
-
-router.get('task/:_id', function(req, res, next) {
-
-/* This route matches URLs in the format task/anything
-Note the format of the route path is  /task/:_id
-This matches task/1 and task/2 and task/3...
-Whatever is after /task/ will be available to the route as req.params._id
-For our app, we expect the URLs to be something like task/1234567890abcdedf1234567890
-Where the number is the ObjectId of a task.
-So the req.params._id will be the ObjectId of the task to find
-*/
-
-  Task.findOne({_id: req.params._id} )
-    .then( (task) => {
-
-      if (!task) {
-        res.status(404).send('Task not found');
-      }
-      else if ( req.project._id.equals(task.project)) {
-        // Does this task belong to this user?
-        res.render('task', {title: 'Task', task: task});
-      }
-      else {
-        // Not this user's task. Send 403 Forbidden response
-        res.status(403).send('This is not your task, you may not view it');
-      }
-    })
-    .catch((err) => {
-      next(err);
-    })
-
-});
 
 /* GET details about one project */
 
@@ -88,10 +55,44 @@ So the req.params._id will be the ObjectId of the task to find
 
 });
 
-/* GET completed tasks */
-router.get('/completed', function(req, res, next){
+/* GET details about one task */
 
-  Task.find( {project: req.project._id, completed:true} )
+router.get('task/:_id', function(req, res, next) {
+
+/* This route matches URLs in the format task/anything
+Note the format of the route path is  /task/:_id
+This matches task/1 and task/2 and task/3...
+Whatever is after /task/ will be available to the route as req.params._id
+For our app, we expect the URLs to be something like task/1234567890abcdedf1234567890
+Where the number is the ObjectId of a task.
+So the req.params._id will be the ObjectId of the task to find
+*/
+
+  Task.findOne({_id: req.params._id} )
+    .then( (task) => {
+
+      if (!task) {
+        res.status(404).send('Task not found');
+      }
+      else if ( req.project._id.equals(task.project)) {
+        // Does this task belong to this user?
+        res.render('task', {title: 'Task', task: task});
+      }
+      else {
+        // Not this user's task. Send 403 Forbidden response
+        res.status(403).send('This is not your task, you may not view it');
+      }
+    })
+    .catch((err) => {
+      next(err);
+    })
+
+});
+
+/* GET completed tasks */
+router.get('/:_id/completed', function(req, res, next){
+
+  Task.find( {project: req.params._id, completed:true} )
     .then( (docs) => {
       res.render('tasks_completed', { title: 'Completed tasks' , tasks: docs });
     }).catch( (err) => {
