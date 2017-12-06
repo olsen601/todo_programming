@@ -20,6 +20,19 @@ specify it for every router */
 
 router.use(isLoggedIn);
 
+/* GET home page with all incomplete tasks */
+router.get('/project', function(req, res, next) {
+
+  Task.find( { project: req.project._id, completed: false})
+    .then( (docs) => {
+      res.render('project', {title: 'Project', projects: docs})
+    })
+    .catch( (err) => {
+    next(err);
+  });
+
+});
+
 /* GET details about one task */
 
 router.get('/task/:_id', function(req, res, next) {
