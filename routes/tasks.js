@@ -102,7 +102,7 @@ router.get('/completed', function(req, res, next){
 
 
 /* POST new task */
-router.post('project/:_id/add', function(req, res, next){
+router.post('/add', function(req, res, next){
 
 
 var date = new Date();
@@ -121,7 +121,7 @@ var date = new Date();
     new Task( { project: req.project._id, text: req.body.text, completed: false, dateCreated: date} ).save()
       .then((newTask) => {
         console.log('The new task created is: ', newTask);
-        res.redirect('/project');
+        res.redirect('/project/:_id');
       })
       .catch((err) => {
         next(err);   // most likely to be a database error.
