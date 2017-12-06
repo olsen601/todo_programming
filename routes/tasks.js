@@ -24,8 +24,9 @@ router.use(isLoggedIn);
 router.get('/project/:id', function(req, res, next) {
 
   Task.find( { project: req.project._id, completed: false})
-    .then( (docs) => {
-      res.render('project', {title: 'Project', projects: docs})
+    .then( (project) => {
+      //find tasks
+      res.render('project', {tasks: project})
     })
     .catch( (err) => {
     next(err);
