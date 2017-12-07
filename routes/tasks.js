@@ -39,7 +39,7 @@ So the req.params._id will be the ObjectId of the task to find
       if (!task) {
         res.status(404).send('Task not found');
       }
-      else if ( req.params._id.equals(task._id)) {
+      else if ( req.params._id.equals(req.task._id)) {
         // Does this task belong to this user?
         res.render('task', {title: 'Task', task: task});
       }
