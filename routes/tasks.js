@@ -62,7 +62,7 @@ So the req.params._id will be the ObjectId of the task to find
 
 /* GET details about one task */
 
-router.get('/:_id/task/:_id', function(req, res, next) {
+router.get('/task/:_id', function(req, res, next) {
 
 /* This route matches URLs in the format task/anything
 Note the format of the route path is  /task/:_id
