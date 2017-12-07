@@ -20,8 +20,6 @@ specify it for every router */
 
 router.use(isLoggedIn);
 
-/* GET details about one task */
-
 router.get('/task/:_id', function(req, res, next) {
 
 /* This route matches URLs in the format task/anything
@@ -39,7 +37,7 @@ So the req.params._id will be the ObjectId of the task to find
       if (!task) {
         res.status(404).send('Task not found');
       }
-      else if ( req.params._id.equals(req.task._id)) {
+      else if ( req.project._id.equals(task.project)) {
         // Does this task belong to this user?
         res.render('task', {title: 'Task', task: task});
       }
