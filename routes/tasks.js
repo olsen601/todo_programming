@@ -62,7 +62,7 @@ So the req.params._id will be the ObjectId of the task to find
 
 /* GET details about one task */
 
-router.get('/:_id/task/:_id', function(req, res, next) {
+router.get('/task/:_id', function(req, res, next) {
 
 /* This route matches URLs in the format task/anything
 Note the format of the route path is  /task/:_id
@@ -81,7 +81,7 @@ So the req.params._id will be the ObjectId of the task to find
       }
       else if ( req.project._id.equals(task.project)) {
         // Does this task belong to this user?
-        res.render('task', {title: 'Task',project: project, task: task});
+        res.render('task', {title: 'Task', task: task});
       }
       else {
         // Not this user's task. Send 403 Forbidden response
