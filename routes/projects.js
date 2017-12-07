@@ -57,7 +57,7 @@ So the req.params._id will be the ObjectId of the task to find
       }
       else if ( req.user._id.equals(project.creator)) {
         // Does this task belong to this user?
-        Task.find( {proeject: req.params._id, completed: false})
+        Task.find( {project: req.project._id, completed: false})
         .then( (tasks) => {
           res.render('project', {title: 'Project', project: project, tasks: tasks});
         })
