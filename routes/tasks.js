@@ -72,8 +72,6 @@ For our app, we expect the URLs to be something like task/1234567890abcdedf12345
 Where the number is the ObjectId of a task.
 So the req.params._id will be the ObjectId of the task to find
 */
-Project.findOne({_id: req.params._id})
-  .then( (project) => {
 
   Task.findOne({_id: req.params._id} )
     .then( (task) => {
@@ -89,10 +87,6 @@ Project.findOne({_id: req.params._id})
         // Not this user's task. Send 403 Forbidden response
         res.status(403).send('This is not your task, you may not view it');
       }
-    })
-    .catch((err) => {
-      next(err);
-    })
     })
     .catch((err) => {
       next(err);
