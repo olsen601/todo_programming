@@ -20,7 +20,7 @@ specify it for every router */
 
 router.use(isLoggedIn);
 
-router.get('/task/:_id', function(req, res, next) {
+router.get('/project/task/:_id', function(req, res, next) {
 
 /* This route matches URLs in the format task/anything
 Note the format of the route path is  /task/:_id
