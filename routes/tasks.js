@@ -23,13 +23,8 @@ router.use(isLoggedIn);
 
 router.get('/:_id/task/:_id', function(req, res, next) {
 
-/* This route matches URLs in the format task/anything
-Note the format of the route path is  /task/:_id
-This matches task/1 and task/2 and task/3...
-Whatever is after /task/ will be available to the route as req.params._id
-For our app, we expect the URLs to be something like task/1234567890abcdedf1234567890
-Where the number is the ObjectId of a task.
-So the req.params._id will be the ObjectId of the task to find
+/* This route matches URLs in the format project id/task/task id
+specifically requiring the project id to redirect back to the project
 */
 
   Task.findOne({_id: req.params._id} )
@@ -42,7 +37,7 @@ So the req.params._id will be the ObjectId of the task to find
 
 });
 
-/* POST new task */
+/* POST new task to project/project id */
 router.post('/:_id/add', function(req, res, next){
 
 
@@ -72,7 +67,7 @@ var date = new Date();
 });
 
 
-/* POST task done */
+/* POST task done under a specific project id */
 router.post('/:_id/done', function(req, res, next) {
 
   var date = new Date();
@@ -92,7 +87,7 @@ router.post('/:_id/done', function(req, res, next) {
 });
 
 
-/* POST all tasks done */
+/* POST all tasks done under a specific project id*/
 router.post('/:_id/alldone', function(req, res, next) {
 
   var date = new Date();
@@ -110,7 +105,7 @@ router.post('/:_id/alldone', function(req, res, next) {
 });
 
 
-/* POST task delete */
+/* POST task delete under a specific prject id */
 router.post('/:_id/delete', function(req, res, next){
 
   Task.deleteOne( {project: req.params._id, _id : req.body._id } )
@@ -129,29 +124,5 @@ router.post('/:_id/delete', function(req, res, next){
     });
 
 });
-
-router.post('/deleteDone', function(req, res, next) {
-
-  Task.deleteMany( {completed: true} )
-    .then( (result) => {
-      req.flash('info', 'All Completed Tasks Deleted');
-      res.redirect('/project');
-    })
-    .catch( (err) => {
-      next(err);
-    })
-  });
-
-  router.post('/deleteAll', function(req, res, next) {
-
-    Task.deleteMany( {project: req.project._id} )
-      .then( (result) => {
-        req.flash('info', 'Tasks Deleted');
-        res.redirect('/project');
-      })
-      .catch( (err) => {
-        next(err);
-      })
-    });
 
 module.exports = router;

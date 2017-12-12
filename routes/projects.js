@@ -22,7 +22,7 @@ specify it for every router */
 router.use(isLoggedIn);
 
 
-/* GET home page with all incomplete tasks */
+/* GET home page with all incomplete projects specific to the user*/
 router.get('/', function(req, res, next) {
 
   Project.find( { creator: req.user._id, completed: false})
@@ -36,17 +36,14 @@ router.get('/', function(req, res, next) {
 });
 
 
-/* GET details about one project */
+/* GET details about one project and all tasks with that projects id*/
 
 router.get('/project/:_id', function(req, res, next) {
 
-/* This route matches URLs in the format task/anything
+/* This route matches URLs in the format project/anything
 Note the format of the route path is  /project/:_id
-This matches task/1 and task/2 and task/3...
-Whatever is after /task/ will be available to the route as req.params._id
-For our app, we expect the URLs to be something like task/1234567890abcdedf1234567890
-Where the number is the ObjectId of a task.
-So the req.params._id will be the ObjectId of the task to find
+also utilized in the tasks.js file for routes to manipulate the next layer
+of the data structure.
 */
 
   Project.findOne({_id: req.params._id} )
@@ -66,7 +63,7 @@ So the req.params._id will be the ObjectId of the task to find
       })
       }
       else {
-        // Not this user's task. Send 403 Forbidden response
+        // Not this user's project. Send 403 Forbidden response
         res.status(403).send('This is not your project, you may not view it');
       }
     })
@@ -99,6 +96,8 @@ router.get('/tasks_completed', function(req, res, next){
     next(err);
   });
 
+  //alter to display tasks in groups under projects
+
 });
 
 /* POST new project */
@@ -108,7 +107,7 @@ router.post('/addproject', function(req, res, next){
 var date = new Date();
 
   if (!req.body || !req.body.name) {
-    //no task text info, redirect to home page with flash message
+    //no project name info, redirect to home page with flash message
     req.flash('error', 'please enter a project');
     res.redirect('/');
   }
@@ -141,7 +140,7 @@ router.post('/projectDone', function(req, res, next) {
         Task.find({ project: req.body._id }).updateMany({$set: {completed: true, dateCompleted: date}})
           .then((updatedTask) => {
             if (updatedTask){
-              res.redirect('/')  // One thing was updated. Redirect to home
+              res.redirect('/');
           }}).catch((err) => {
           next(err);
         });
@@ -161,15 +160,15 @@ router.post('/projectDelete', function(req, res, next){
   Project.deleteOne( { creator: req.user._id, _id : req.body._id } )
     .then( (result) => {
 
-      if (result.deletedCount === 1) {  // one task document deleted
+      if (result.deletedCount === 1) {  // one project document deleted
         Task.find( {project: req.body._id} ).deleteMany({})
-          .then( (results) => {
+          .then( (results) => { // delete all tasks with deleted project id
             res.redirect('/');
           }).catch( (err) => {
             next(err);
           });
       } else {
-        // The task was not found. Report 404 error.
+        // The project was not found. Report 404 error.
         res.status(404).send('Error deleting project: not found');
       }
     })
