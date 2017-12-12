@@ -63,12 +63,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', auth);
 app.use('/', projects);
 app.use('/project', tasks);
+app.use('/projects_completed', projects);
 app.use('/task', tasks);
-
+app.use('/tasks_completed', projects);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found'+ req.error_msg); //check error_msg
+  var err = new Error('Not Found'); //check error_msg
   err.status = 404;
   next(err);
 });

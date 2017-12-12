@@ -17,14 +17,14 @@
 <div class="tasklist">
 
 {{#each tasks}}
-  <p>{{@index}}: <a href="task/{{this._id}}">{{this.text}}</a> Created: {{formatDate this.dateCreated}}</p>
+  <p><span class="index">{{math @index "+" 1}}</span> <a href="{{this.project}}/task/{{this._id}}">{{this.text}}</a> Created: {{formatDate this.dateCreated}}</p>
 
-  <form action="/done" method="POST" class="done_form">
+  <form action="{{this.project}}/done" method="POST" class="done_form">
     <input type="hidden" name="_id" value="{{this._id}}">
     <input class="done_button" type="submit" name="done" value="Done">
   </form>
 
-  <form action="/delete" method="POST" class="delete_form">
+  <form action="{{this.project}}/delete" method="POST" class="delete_form">
     <input type="hidden" name="_id" value="{{this._id}}">
     <input class="delete_button" type="submit" name="done" value="Delete">
   </form>
@@ -37,7 +37,7 @@
 
 <div class="alldone">
   {{#if tasks}}
-    <form action="/alldone" method="POST">
+    <form action="{{project._id}}/alldone" method="POST">
       <input class="all_done_button" type="submit" value="Everything is done!">
     </form>
   {{/if}}

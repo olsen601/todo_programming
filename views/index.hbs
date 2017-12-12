@@ -15,14 +15,14 @@
 <div class="projectlist">
 
 {{#each projects}}
-  <p>{{@index}}: <a href="project/{{this._id}}">{{this.name}}</a> Created: {{formatDate this.dateCreated}}</p>
+  <p><span class="index">{{math @index "+" 1}}</span> <a href="project/{{this._id}}">{{this.name}}</a> Created: {{formatDate this.dateCreated}}</p>
 
-  <form action="/done" method="POST" class="done_form">
+  <form action="/projectDone" method="POST" class="done_form">
     <input type="hidden" name="_id" value="{{this._id}}">
     <input class="done_button" type="submit" name="done" value="Done">
   </form>
 
-  <form action="/delete" method="POST" class="delete_form">
+  <form action="/projectDelete" method="POST" class="delete_form">
     <input type="hidden" name="_id" value="{{this._id}}">
     <input class="delete_button" type="submit" name="done" value="Delete">
   </form>

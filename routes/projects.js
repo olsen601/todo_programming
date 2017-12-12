@@ -77,8 +77,8 @@ So the req.params._id will be the ObjectId of the task to find
 });
 
 
-/* GET completed tasks */
-router.get('/completed', function(req, res, next){
+/* GET completed projects */
+router.get('/projects_completed', function(req, res, next){
 
   Project.find( {creator: req.user._id, completed:true} )
     .then( (docs) => {
@@ -89,8 +89,19 @@ router.get('/completed', function(req, res, next){
 
 });
 
+/* GET completed tasks */
+router.get('/tasks_completed', function(req, res, next){
 
-/* POST new task */
+  Task.find( {completed:true} )
+    .then( (tasks) => {
+      res.render('tasks_completed', { title: 'Completed Tasks' , tasks: tasks });
+    }).catch( (err) => {
+    next(err);
+  });
+
+});
+
+/* POST new project */
 router.post('/addproject', function(req, res, next){
 
 
@@ -104,9 +115,9 @@ var date = new Date();
 
   else {
 
-    // Insert into database. New tasks are assumed to be not completed.
+    // Insert into database. New projects are assumed to be not completed.
 
-    // Create a new Task, an instance of the Task schema, and call save()
+    // Create a new Project, an instance of the Project schema, and call save()
     new Project( { creator: req.user._id, name: req.body.name, completed: false, dateCreated: date} ).save()
       .then((newProject) => {
         console.log('The new project created is: ', newProject);
@@ -119,15 +130,21 @@ var date = new Date();
 
 });
 
-/* POST task done */
-router.post('/done', function(req, res, next) {
+/* POST project done and tasks within that project*/
+router.post('/projectDone', function(req, res, next) {
 
   var date = new Date();
 
   Project.findOneAndUpdate( { creator: req.user._id, _id: req.body._id}, {$set: {completed: true, dateCompleted: date}} )
     .then((updatedProject) => {
-      if (updatedProject) {   // updatedTask is the document *before* the update
-        res.redirect('/')  // One thing was updated. Redirect to home
+      if (updatedProject) {
+        Task.find({ project: req.body._id }).updateMany({$set: {completed: true, dateCompleted: date}})
+          .then((updatedTask) => {
+            if (updatedTask){
+              res.redirect('/')  // One thing was updated. Redirect to home
+          }}).catch((err) => {
+          next(err);
+        });
       } else {
         // if no updatedTask, then no matching document was found to update. 404
         res.status(404).send("Error marking project done: not found");
@@ -138,15 +155,19 @@ router.post('/done', function(req, res, next) {
 
 });
 
-/* POST task delete */
-router.post('/delete', function(req, res, next){
+/* POST project and task under it delete */
+router.post('/projectDelete', function(req, res, next){
 
   Project.deleteOne( { creator: req.user._id, _id : req.body._id } )
     .then( (result) => {
 
       if (result.deletedCount === 1) {  // one task document deleted
-        res.redirect('/');
-
+        Task.find( {project: req.body._id} ).deleteMany({})
+          .then( (results) => {
+            res.redirect('/');
+          }).catch( (err) => {
+            next(err);
+          });
       } else {
         // The task was not found. Report 404 error.
         res.status(404).send('Error deleting project: not found');
@@ -154,8 +175,36 @@ router.post('/delete', function(req, res, next){
     })
     .catch((err) => {
       next(err);   // Will handle invalid ObjectIDs or DB errors.
-    });
+    })
 
 });
+
+router.post('/deleteAll', function(req, res, next) {
+
+  Project.deleteMany( {creator: req.user._id, completed: true} )
+    .then( (result) => {
+      Task.find( {project: req.body._id} ).deleteMany({})
+        .then( (results) => {
+          req.flash('info', 'Completed Project Deleted');
+          res.redirect('/');
+        }).catch( (err) => {
+          next(err);
+        });
+    })
+    .catch( (err) => {
+      next(err);
+    })
+  });
+
+  router.post('/deleteAllTasks', function(req, res, next) {
+
+    Task.deleteMany( {completed: true} )
+      .then( (result) => {
+        req.flash('info', 'Completed Tasks Deleted');
+        res.redirect('/');
+      }).catch( (err) => {
+        next(err);
+      })
+    });
 
 module.exports = router;

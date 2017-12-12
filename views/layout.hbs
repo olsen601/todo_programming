@@ -3,22 +3,33 @@
   <head>
     <title>{{title}}</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
   </head>
   <body>
-    {{{body}}}
-
     <div class="navigation">
 
         {{#if username}}
-          <br>Hello, {{username}}
-          <br><a href="/">Projects</a> <a href="/projects_completed">Completed Projects</a>
-          <a href="/task">Tasks</a> <a href="/tasks_completed">Completed tasks</a>
-          <br><a href="/auth/logout">Logout</a>
+          <a href="/">Projects</a>
+          <a href="/projects_completed">Completed Projects</a>
+          <a href="/tasks_completed">Completed tasks</a>
+          </span>
+        {{else}}
+        {{/if}}
+
+    </div>
+
+    <hr>
+
+    {{{body}}}
+
+    <div class="bottomNavigation">
+
+        {{#if username}}
+          <span class="greeting">Hello, {{username}} </span><a href="/auth/logout">Logout</a>
         {{else}}
           Sign in to create and manage to do items
         {{/if}}
 
     </div>
-
   </body>
 </html>

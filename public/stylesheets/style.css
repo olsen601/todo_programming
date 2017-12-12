@@ -1,62 +1,86 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: white;
+  font-family: 'Libre Baskerville', serif;
+  font-weight:200;
+  font-size: 13px;
+  background-color: #171413;
+  color: #FFFFFF;
+}
+
+h2 {
+  font: 21px "Helvetica";
+  color: #E00090;
 }
 
 a {
-  color: black;
+  color: #E00090;
   text-decoration: none;
-  padding-left: 5px;
-  padding-right: 5px;
-  background-color: lightBlue;
+  padding-right: 10px;
+}
+
+a:hover {
+  color: #0AAFC6;
+  text-decoration: none;
+  padding-right: 10px;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+}
+
+.navigation {
+  background-color: #171413;
+  color: #E00090;
+  padding-bottom: 15px;
+  font: 21px "Helvetica";
+  font-weight: bold;
+}
+
+.bottomNavigation {
+  background-color: #171413;
+  color: #E00090;
+  position: absolute;
+  bottom: 50px;
+}
+
+.greeting {
+  color: #FFFFFF;
+}
+
+.index {
+  font-weight: 400;
+  color: #0AAFC6;
 }
 
 .error_msg {
-  color:red;
+  color: #E00090;
 }
 
 .info_msg{
-  color: purple;
+  color: #FFFFFF;
 }
 
 #addtask_text {
   width: 50%
 }
 
-.navigation {
-  padding-bottom: 20px;
-}
-
 .delete_form, .done_form {
   display: inline;
 }
 
-.done_button {
-  background-color: lightGreen;
+.done_button, .all_done_button {
+  background-color: #0AAFC6;
+  color: #171413;
 }
 
-.delete_button {
-  background-color: crimson;
-  color: white;
-}
-
-.all_done_button{
-  background-color: lightGreen;
-  font-weight:bold;
-}
-
-.delete_all_button{
-  background-color: crimson;
-  color: white;
+.delete_button, .delete_all_button {
+  background-color: #A10067;
+  color: #FFFFFF;
 }
 
 .alldone {
   padding-top: 20px;
-}
-
-.navigation{
-  padding-top: 10px;
 }
 
 .list{

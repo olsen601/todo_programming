@@ -6,7 +6,7 @@
 {{else}}
   <p>{{task.text}} is not yet completed.</p>
 
-  <form action="/done" method="POST" class="done_form">
+  <form action="/project/{{task.project}}/done" method="POST" class="done_form">
     <input type="hidden" name="_id" value="{{task._id}}">
     <input class="done_button" type="submit" name="done" value="Done">
   </form>
@@ -17,7 +17,7 @@
 
 <div class="delete_task">
 
-  <form action="/delete" method="POST" class="delete_form">
+  <form action="/project/{{task.project}}/delete" method="POST" class="delete_form">
     <input type="hidden" name="_id" value="{{task._id}}">
     <input class="delete_button" type="submit" name="done" value="Delete">
   </form>
